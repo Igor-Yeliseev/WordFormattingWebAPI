@@ -1,0 +1,60 @@
+[
+  {
+    "ContainingType": "DocumentFormattingWebAPI.Controllers.DocumentController",
+    "Method": "CheckDocument",
+    "RelativePath": "word-formatting-api/check-doc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DocumentFormattingWebAPI.Controllers.DocumentController",
+    "Method": "GetFormattingRules",
+    "RelativePath": "word-formatting-api/get-rules",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DocumentFormattingWebAPI.Controllers.DocumentController",
+    "Method": "GetRulesFromFile",
+    "RelativePath": "word-formatting-api/get-rules-from-file",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DocumentFormattingWebAPI.Controllers.DocumentController",
+    "Method": "SetupFormattingRules",
+    "RelativePath": "word-formatting-api/setup-rules",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "rawJson",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

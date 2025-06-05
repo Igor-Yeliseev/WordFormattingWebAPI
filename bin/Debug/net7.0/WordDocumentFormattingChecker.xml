@@ -1,0 +1,1274 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WordDocumentFormattingChecker</name>
+    </assembly>
+    <members>
+        <member name="T:WordDocumentFormattingChecker.AcademicReportFormattingValidator">
+            <summary> Валидатор оформления пояснительной записки курсовых и дипломных работ </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.#ctor(System.String)">
+            <summary> Инициализирует новый экземпляр валидатора. </summary>
+            <param name="filePath"> Путь к файлу .docx </param>
+            <exception cref="T:System.IO.FileNotFoundException"> Выбрасывается, если файл не существует </exception>
+            <exception cref="T:System.InvalidOperationException"> Выбрасывается при повреждении структуры документа </exception>
+            <remarks>
+            Документ будет открыт в режиме редактирования (isEditable: true)
+            </remarks>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.#ctor(System.IO.Stream)">
+            <summary> Инициализирует новый экземпляр валидатора </summary>
+            <param name="stream"> Поток с содержимым .docx </param>
+            <exception cref="T:System.ArgumentNullException"> Выбрасывается, если поток равен null </exception>
+            <exception cref="T:System.InvalidOperationException"> Выбрасывается при повреждении структуры документа </exception>
+            <remarks>
+            Поток должен быть доступен для чтения и поддерживать позиционирование (CanSeek = true)
+            Владелец потока должен обеспечить его корректное закрытие после использования валидатора
+            </remarks>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.#ctor(System.IO.Stream,System.String)">
+            <summary> Инициализирует новый экземпляр валидатора с кастомными правилами форматирования из JSON-строки </summary>
+            <param name="stream">Поток с содержимым .docx</param>
+            <param name="jsonRules">JSON-строка с правилами форматирования</param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.#ctor(DocumentFormat.OpenXml.Packaging.WordprocessingDocument)">
+            <summary> Основной закрытый конструктор для инициализации общих компонентов </summary>
+            <param name="document"> Открытый документ Word </param>
+            <exception cref="T:System.ArgumentNullException"> Выбрасывается, если документ равен null </exception>
+            <exception cref="T:System.InvalidOperationException"> Выбрасывается при отсутствии обязательных частей документа </exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.OpenDocumentFromFile(System.String)">
+            <summary> Открывает документ Word из файла </summary>
+            <param name="filePath"> Путь к файлу .docx </param>
+            <returns> Открытый Word-документ </returns>
+            <exception cref="T:System.IO.FileNotFoundException"> Выбрасывается, если файл не существует </exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.Validate">
+            <summary> Проверить оформление документа </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.OptimizeParagraphs(System.Collections.Generic.List{DocumentFormat.OpenXml.Wordprocessing.Paragraph})">
+            <summary> Оптимизировать документ путём объединения элементов &lt;w:r&gt; с одинаковым форматированием &lt;w:rPr&gt;. </summary>
+            <param name="paragraphs"> Список абзацев документа </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.CheckGeneralParameters">
+            <summary> Проверить общие параметры документа </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.SetupDocDefaultParams">
+            <summary> Получить и обновить значения параметров по умолчанию </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.CheckCharactersMin">
+            <summary> Проверить минимально допустимое количество символов </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.CheckPageNumbering">
+            <summary> Проверить нумерацию страниц </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.CheckFooter(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить шрифт нумерации страниц </summary>
+            <param name="errorList"> Билдер для потенциальных ошибок </param>
+            <param name="footerRunProps"> Элемент w:r внутри w:ftr в файле footer*.xml </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.CheckPagesCount">
+            <summary> Проверить количество страниц записки. </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.GetPagesCount(System.String)">
+            <summary> Получить количество страниц в документе </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.CheckMargins">
+            <summary> Проверить поля страниц документа </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.CheckHyphenation">
+            <summary> Проверить автоматический перенос слов </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.AcademicReportFormattingValidator.Dispose">
+            <summary> 
+              Flushes and saves the content, closes the document, and releases all resources.
+            </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Components.Chapter">
+            <summary> Класс, представляющий главу записки. </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Components.Chapter._subChapters">
+            <summary> Список подразделов. </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.Chapter.CheckHeading">
+            <summary> Проверить оформление названия раздела </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Components.ChaptersCollection">
+            <summary> Класс проверки оформления Глав документа </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Components.ChaptersCollection._chapters">
+            <summary> Список разделов (глав) документа </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Components.ChaptersCollection._headingPattern">
+            <summary> Шаблон заголовка названия главы </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.ChaptersCollection.FindAndCreateChapters(System.Collections.Generic.List{DocumentFormat.OpenXml.Wordprocessing.Paragraph})">
+            <summary> Найти и создать экземпляры разделов (глав) документа </summary>
+            <param name="documentParagraphs"> Список абзацев документа </param>
+            <returns> Удалось ли создать разделы </returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.ChaptersCollection.CheckHeading">
+            <summary> Проверить все разделы и их содержимое </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Components.Conclusion">
+            <summary> Класс проверки оформления раздела "Заключение" </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.Conclusion.CheckHeading">
+            <summary> Проверить формление названия раздела "Заключение" </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.Conclusion.CheckContent">
+            <summary> Проверить формление абзацев раздела "Заключение" </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Components.DocFormattingValidator">
+            <summary> Класс, осуществляющий проверку правил оформления (форматирования) Word-документа в соответствии с требованиями </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.Initialize(WordDocumentFormattingChecker.WordProcessing)">
+            <summary> Инициализировать синглтон класса DocumentFormattingValidator </summary>
+            <param name="wordProcessing"></param>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.Components.DocFormattingValidator.Instance">
+            <summary> Экземпляр валидатора </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckContent_OLD_VERSION(System.Collections.Generic.List{DocumentFormat.OpenXml.Wordprocessing.Paragraph},System.Int32)">
+            <summary> Проверить содержимое раздела документа </summary>
+            <param name="paragraphs"> Список абзацев раздела </param>
+            <param name="startIndex"> Индекс первого проверяемого абзаца </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckContent(System.Collections.Generic.List{DocumentFormat.OpenXml.Wordprocessing.Paragraph},System.Int32)">
+            <summary> Проверить содержимое раздела документа </summary>
+            <param name="paragraphs"> Список абзацев раздела </param>
+            <param name="startIndex"> Индекс первого проверяемого абзаца </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckParagraph(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Проверить абзац текста раздела на соответствие оформлению </summary>
+            <param name="paragraph"> Экземпляр абзаца </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckEmptyLine(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Проверить форматирование пустой строки </summary>
+            <param name="emptyParagraph"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckHeadingParagraph(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.Boolean)">
+            <summary> Проверить абзац заголовка раздела </summary>
+            <param name="paragraph"></param>
+            <param name="isChapter"> Является ли абзац названием главы. </param>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckParagraphNoStyle(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Проверить абзац без стилей </summary>
+            <param name="paragraph"> Экземпляр абзаца </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckParagraphWithStyle(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Проверить абзац, у которого установлен стиль &lt;w:pStyle&gt; </summary>
+            <param name="paragraph"> Экземпляр абзаца </param>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckHeadingNoStyle(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.Boolean)">
+            <summary> Проверить абзац заголовка, у которого нет стиля &lt;w:pStyle&gt; </summary>
+            <param name="headingParagraph"></param>
+            <param name="isChapter"> Является ли заголовок какой-то главой записки. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckHeadingWithStyle(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.Boolean)">
+            <summary> Проверить абзац заголовка, у которого есть стиль &lt;w:pStyle&gt; </summary>
+            <param name="headingParagraph"></param>
+            <param name="isChapter"> Является ли заголовок какой-то главой записки. </param>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckParagraphCharsMin(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Проверить минимальное допустимое количество символов на абзац </summary>
+            <param name="paragraph"> Экземпляр абзаца. </param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckParaProps(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties)">
+            <summary> Проверить свойства форматирования абзаца </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="paragraphProps"> Элемент форматирования w:pPr в document.xml. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckParaProps(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties,DocumentFormat.OpenXml.Wordprocessing.Style)">
+            <summary> Проверить свойства форматирования абзаца при наличии элемента стиля </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="paragraphProps"> Элемент форматирования w:pPr в document.xml. </param>
+            <param name="style"> Стиль примененный к абзацу из файла styles.xml. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckHeadingParaProps(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties,System.Boolean)">
+            <summary> Проверить свойства форматирования абзаца заголовка </summary>
+            <param name="errorsList">  Журнал для добавления ошибок оформления. </param>
+            <param name="paragraphProps"> Элемент форматирования w:pPr в document.xml </param>
+            <param name="isChapter"> Является ли главой. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckHeadingParaProps(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties,DocumentFormat.OpenXml.Wordprocessing.Style,System.Boolean)">
+            <summary> Проверить свойства форматирования абзаца заголовка </summary>
+            <param name="errorsList">  Журнал для добавления ошибок оформления. </param>
+            <param name="paragraphProps"> Элемент форматирования w:pPr в document.xml </param>
+            <param name="style"> Примененный к абзацу стиль из styles.xml. </param>
+            <param name="isChapter"> Является ли заголовок какой-то главой записки. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckDashes(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Проверить тире в абзаце</summary>
+            <param name="paragraph"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.IsAnyDashes(System.String,System.Char)">
+            <summary> Есть ли в тексте тире </summary>
+            <param name="text"> Фрагмент текста </param>
+            <param name="dash"> Символ тире (по умол. среднее тире) </param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckDash(System.Char)">
+            <summary> Проверка обычного тире </summary>
+            <param name="dash"> Символ тире </param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.HighlightAllOccurrences(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.String,DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues)">
+            <summary> Выделить цветом все найденные фрагменты текста в абзаце </summary>
+            <param name="paragraph"></param>
+            <param name="dash"></param>
+            <param name="highlightColor"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.FindAndHighlightSequentialEmptyLines(System.Collections.Generic.IEnumerable{DocumentFormat.OpenXml.Wordprocessing.Paragraph})">
+            <summary> Найти и выделить последовательно идущие пустые строки </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.HighlightEmptyParagraphs(DocumentFormat.OpenXml.Wordprocessing.Paragraph,DocumentFormat.OpenXml.Wordprocessing.Paragraph,DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues)">
+            <summary> Выделить лишние пустые абзацы из диапазона абзацев </summary>
+            <param name="startParagraph"></param>
+            <param name="endParagraph"></param>
+            <param name="color"> Цвет выделения </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.HighlightAsEmpty(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Выделить лишний пустой абзац маркером </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.HighlightAsEmpty(DocumentFormat.OpenXml.Wordprocessing.Paragraph,DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues)">
+            <summary> Выделить лишний пустой абзац маркером </summary>
+            <param name="paragraph"></param>
+            <param name="color"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckFigures(System.Collections.Generic.IEnumerable{DocumentFormat.OpenXml.Wordprocessing.Paragraph})">
+            <summary> Проверить оформление рисунков </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckFigureCaption(System.String)">
+            <summary> Проверить подпись под рисунком </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckSpacing(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties)">
+            <summary> Проверить значение интервалов </summary>
+            <param name="errorList"> Журнал для добавления ошибок оформления. </param>
+            <param name="paragraphProps"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckSpacing(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties,DocumentFormat.OpenXml.Wordprocessing.Style)">
+            <summary> Проверить значение интервалов 'Перед' и 'После' </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="docParaProps"> Контейнер свойств форматирования абзаца (w:pPr) в document.xml </param>
+            <param name="style"> Примененный к абзацу стиль из styles.xml. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.VerifyLineSpacing(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.SpacingBetweenLines)">
+            <summary> Проверяет междустрочный интервал абзаца. </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="spacing"> Экземпляр элемента межд. интервала (w:spacing). </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckLineSpacing(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties)">
+            <summary> Проверяет междустрочный интервал абзаца. </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="paraProps"> Контейнер свойств форматирования абзаца. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckLineSpacing(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties,DocumentFormat.OpenXml.Wordprocessing.Style)">
+            <summary> Проверяет междустрочный интервал абзаца, когда у него есть стиль из styles.xml. </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="documentParaProps"> Контейнер свойств форматирования абзаца (w:pPr). </param>
+            <param name="style"> Стиль примененный к абзацу из файла styles.xml. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.VerifyFirstLineIndent(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.Indentation,System.Nullable{System.Double})">
+            <summary> Проверяет размер отступа (first line) в сантиметрах.</summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="indentation"> Экземпляр элемента отступов (w:ind). </param>
+            <param name="requiredValue"> Требуемое значение отступа первой строки (first line) в сантиметрах. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.VerifyIndentations(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.Indentation,System.Nullable{WordDocumentFormattingChecker.ParagraphIndentions})">
+            <summary> Проверяет значения отступов в сантиметрах. </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="indentation"> Экземпляр элемента отступа (w:ind). </param>
+            <param name="requiredIndents"> Требуемое значение отступов абзаца в сантиметрах. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckIndent(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties,System.Nullable{System.Double})">
+            <summary> Проверить отступ первой строки в абзаце </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="paragraphProps"> Контейнер свойств форматирования абзаца (w:pPr). </param>
+            <param name="requiredValue"> Требуемое значение отступа. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckIndentations(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties,System.Nullable{WordDocumentFormattingChecker.ParagraphIndentions})">
+            <summary> Проверить отступы абзаца. </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="paragraphProps"> Контейнер свойств форматирования абзаца (w:pPr). </param>
+            <param name="requiredIndents"> Требуемое значение отступов. </param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckIndent(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties,DocumentFormat.OpenXml.Wordprocessing.Style,System.Nullable{System.Double})">
+            <summary> Проверить левый отступ абзаца. </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="documentParaProps"> Контейнер свойств форматирования абзаца (w:pPr). </param>
+            <param name="style"> Стиль примененный к абзацу из файла styles.xml. </param>
+            <param name="requiredValue"> Требуемое значение отступа. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckIndentations(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties,DocumentFormat.OpenXml.Wordprocessing.Style,System.Nullable{WordDocumentFormattingChecker.ParagraphIndentions})">
+            <summary> Проверить отступы абзаца. </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="documentParaProps"> Контейнер свойств форматирования абзаца (w:pPr). </param>
+            <param name="style"> Стиль примененный к абзацу из файла styles.xml. </param>
+            <param name="requiredIndents"> Требуемые отступы абазаца. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckPageNumberingAlignment(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.Justification,System.Nullable{DocumentFormat.OpenXml.Wordprocessing.JustificationValues})">
+            <summary> Проверяет значение выравнивания текста в нумерации страниц. </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="justification"> Экземпляр элемента выравнивания (w:jc). </param>
+            <param name="alignment"> Выравнивание. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.VerifyParagraphAlignment(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.Justification,System.Nullable{DocumentFormat.OpenXml.Wordprocessing.JustificationValues})">
+            <summary> Проверяет значение выравнивания текста (Alignment). </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="justification"> Экземпляр элемента выравнивания (w:jc). </param>
+            <param name="alignment"> Выравнивание. </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckAlignment(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties,System.Nullable{DocumentFormat.OpenXml.Wordprocessing.JustificationValues})">
+            <summary> Проверить выравнивание текста абзаца. </summary>
+            <param name="errorsList">  Журнал для добавления ошибок оформления. </param>
+            <param name="paraProps"> Контейнер свойств форматирования абзаца (w:pPr). </param>
+            <param name="alignment"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckAlignment(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.ParagraphProperties,DocumentFormat.OpenXml.Wordprocessing.Style,System.Nullable{DocumentFormat.OpenXml.Wordprocessing.JustificationValues})">
+            <summary> Проверить выравнивание текста абзаца </summary>
+            <param name="errorsList"> Журнал для добавления ошибок оформления. </param>
+            <param name="documentParaProps"> Контейнер свойств форматирования абзаца (w:pPr). </param>
+            <param name="style"> Стиль примененный к абзацу из файла styles.xml. </param>
+            <param name="alignment"></param>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Components.DocFormattingValidator.FontCheck">
+            <summary> Проверки форматирования, проводимые над шрифтом </summary>
+            <param name="errorList"> Список примечаний </param>
+            <param name="runProps"> Свойства области текста &lt;w:r&gt; </param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.SetFontCheckMethods(System.Boolean)">
+            <summary> Установить методы проверки шрифта текста </summary>
+            <param name="isHeading"> Текст заголовка (раздела/подраздела) </param>
+            <returns> Делегат с цепочкой методов проверки </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.SetFontChecksWithStyle(System.Boolean)">
+            <summary> Установить методы проверки шрифта текста, когда есть стиль &lt;w:pStyle&gt; в абзаце </summary>
+            <param name="isHeading"> Текст заголовка (раздела/подраздела) </param>
+            <returns> Делегат с цепочкой методов проверки </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckFontName(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить название шрифта </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckFontSize(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить размер шрифта </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckFontColor(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить цвет шрифта </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckIsBold(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить на выделение полужирным </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckHeadingIsBold(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить на полужирный на заголовке </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckIsItalic(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить на курсив и выделение им слов на латинице </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckIsUnderline(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить на выделение подчеркиванием </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckIsStrikethrough(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить на зачеркивание </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckIsHighlighted(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить на выделение "маркером" </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.GetBaseStyle``1(DocumentFormat.OpenXml.Wordprocessing.Style)">
+            <summary> Получить стиль на котором основан другой. </summary>
+            <typeparam name="T"> Аргумент тип, представляющий свойство форматирования. </typeparam>
+            <param name="style"> Стиль основанный на каком-то другом. </param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.FindPropertyInStylesHierarchy``2(DocumentFormat.OpenXml.Wordprocessing.Style)">
+            <summary> Производит поиск свойства форматирования в стиле или его родительских стилях. </summary>
+            <typeparam name="PropsContainerType"> Аргумент типа, представляющий контейнер свойств форматирования (ParagraphProperties или RunProperties). </typeparam>
+            <typeparam name="PropType"> Аргумент типа, представляющий искомое свойство форматирования. </typeparam>
+            <param name="style"> Экземпляр стиля из раздела styles.xml. </param>
+            <returns> Контейнер свойств форматирования, содержащий искомое свойство (либо null). </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckFontName(System.Text.StringBuilder,DocumentFormat.OpenXml.Wordprocessing.RunProperties,DocumentFormat.OpenXml.Wordprocessing.Style)">
+            <summary> Проверить название шрифта при наличии свойств форматирования и стиля параграфа. </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckRun(DocumentFormat.OpenXml.Wordprocessing.Run,WordDocumentFormattingChecker.Components.DocFormattingValidator.FontCheck)">
+            <summary> Проверить элемент текста (Run). </summary>
+            <param name="run"></param>
+            <param name="fontChecks"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckRunWithStyle(DocumentFormat.OpenXml.Wordprocessing.Run,DocumentFormat.OpenXml.Wordprocessing.Style,WordDocumentFormattingChecker.Components.DocFormattingValidator.FontCheckWithStyle)" -->
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.CheckListItem(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Проверка элемента списка </summary>
+            <param name="paragraph"> Экземпляр абзаца </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.SelectParentByValidChild(DocumentFormat.OpenXml.OpenXmlElement,DocumentFormat.OpenXml.OpenXmlElement,System.String)">
+            <summary> Выбрать родительский элемент форматирования (из document.xml или из styles.xml) при наличии ненулевого дочернего элемента внутри него. </summary>
+            <param name="documentElement"> Элемент форматирования из файла document.xml </param>
+            <param name="styleElement"> Элемент форматирования из стиля &lt;w:style&gt; файла styles.xml. </param>
+            <param name="childTagName"> Имя тега внутри дочернего элемента форматирования. </param>
+            <returns> Элемент форатирования, в котором был найден childTagName  (если найдено в двух контейнерах, то приоритетнее из document.xml). </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.SelectPropsByValidChild``1(DocumentFormat.OpenXml.OpenXmlCompositeElement,DocumentFormat.OpenXml.OpenXmlCompositeElement)">
+            <summary> Выбрать контейнер свойств форматирования (из document.xml или из styles.xml) при наличии ненулевого дочернего элемента внутри него. </summary>
+            <typeparam name="PropType"> Аргумент типа, представляющий свойство форматирования. </typeparam>
+            <param name="documentProps"> Контейнер свойств форматирования из файла document.xml. </param>
+            <param name="styleProps"> Контейнер свойств форматирования из стиля &lt;w:style&gt; файла styles.xml. </param>
+            <returns> Свойства форматирования, в котором есть ненулевой дочерный элемент (если найдено в двух контейнерах, то приоритетнее из document.xml; ни в одном - null). </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.SelectValidChild``1(DocumentFormat.OpenXml.OpenXmlCompositeElement,DocumentFormat.OpenXml.OpenXmlCompositeElement)">
+            <summary> Найти ненулевой дочерний элемент из двух контейнеров свойств форматирования (document.xml и styles.xml). </summary>
+            <typeparam name="PropType"> Аргумент тип, представляющий дочерний элемент форматирования. </typeparam>
+            <param name="documentProps"> Контейнер свойств форматирования из файла document.xml </param>
+            <param name="styleProps"> Контейнер свойств форматирования стиля &lt;w:style&gt; из файла styles.xml. </param>
+            <returns> Элемент форматирования (если найдено в двух контейнерах, то приоритетнее из document.xml. ни в одном - null). </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.SelectValidChildWithAttribute``1(DocumentFormat.OpenXml.OpenXmlElement,DocumentFormat.OpenXml.OpenXmlElement,System.String)">
+            <summary> Внутри элементов documentElement и styleElement найти ненулевой дочерний элемент форматирования по типу, у которого есть определенный атрибут. </summary>
+            <typeparam name="PropType"> Аргумент тип, представляющий дочерний элемент форматирования. </typeparam>
+            <param name="documentElement"> Элемент форматирования из файла document.xml </param>
+            <param name="styleElement"> Элемент форматирования стиля &lt;w:style&gt; из файла styles.xml </param>
+            <param name="attributeName"> Имя атрибута элемента </param>
+            <returns> Элемент форматирования (если найдено в двух контейнерах, то приоритетнее из document.xml; ни в одном - null). </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocFormattingValidator.SelectByAttribute(DocumentFormat.OpenXml.OpenXmlElement,DocumentFormat.OpenXml.OpenXmlElement,System.String)">
+            <summary> Выбрать элемент (из document.xml или из styles.xml) при наличии у него определенного атрибута. </summary>
+            <param name="documentElement"> Элемент форматирования из файла document.xml </param>
+            <param name="styleElement"> Элемент форматирования из стиля &lt;w:style&gt; файла styles.xml. </param>
+            <param name="attributeName"> Имя атрибута элемента форматирования. </param>
+            <returns> Элемент форатирования, в котором был найден атрибут. </returns>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Components.DocSection">
+            <summary> Класс проверки оформления раздела документа. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.Components.DocSection.Heading">
+            <summary> Название раздела </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Components.DocSection._headingParagraph">
+            <summary> Абзац заголовка раздела </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Components.DocSection._sectionParagraphs">
+            <summary> Список абзацев раздела </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Components.DocSection._validator">
+            <summary> Валидатор форматирования документа </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocSection.FindAndCreate(System.Collections.Generic.List{DocumentFormat.OpenXml.Wordprocessing.Paragraph})">
+            <summary> Найти и создать раздел </summary>
+            <param name="documentParagraphs"> Список абзацев документа. </param>
+            <returns> Удалось ли найти и создать раздел. </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocSection.Check">
+            <summary> Проверить оформление раздела. </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocSection.CheckHeading">
+            <summary> Проверить оформление названия раздела </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.DocSection.CheckContent">
+            <summary> Проверить оформление абзацев раздела </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Components.Introduction">
+            <summary> Класс проверки оформления раздела "Введение" </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Components.Introduction._headingPattern">
+            <summary> Шаблон названия раздела "Введение". </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.Introduction.CheckHeading">
+            <summary> Проверить оформление названия раздела "Введение" </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.Introduction.CheckContent">
+            <summary> Проверить оформление абзацев раздела "Введение" </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Components.ReferenceList">
+            <summary> Класс представляющий раздел списка использованных источников </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.ReferenceList.CheckHeading">
+            <summary> Проверить оформление названия раздела "Список использованных источников" </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.ReferenceList.CheckContent">
+            <summary> Проверить оформление абзацев раздела "Список использованных источников" </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Components.RunFormattingValidator">
+            <summary> Класс, проверяющий значения ключевых свойств форматирования элементов Run (непрерывный отрезок текста с одинаковыми свойствами) </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.RunFormattingValidator.ValidateFontName(DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить название шрифта </summary>
+            <param name="runProps"> Экземпляр Run области текста </param>
+            <returns> Соответствует ли текст правилам оформления </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.RunFormattingValidator.ValidateFontSize(DocumentFormat.OpenXml.Wordprocessing.RunProperties,System.Nullable{System.Double})">
+            <summary> Проверить размер шрифта. </summary>
+            <param name="runProps"> Экземпляр Run области текста. </param>
+            <param name="requiredSize"> Требуемый размер шрифта. </param>
+            <returns> Соответствует ли текст правилам оформления. </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.RunFormattingValidator.ValidateFontColor(DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Проверить цвет шрифта </summary>
+            <param name="runProps"> Экземпляр Run области текста </param>
+            <returns> Соответствует ли текст правилам оформления </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.RunFormattingValidator.IsBold(DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Есть ли выделение полужирным </summary>
+            <param name="runProps"> Экземпляр Run области текста </param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.RunFormattingValidator.IsItalic(DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Есть ли выделение курсивом </summary>
+            <param name="runProps"> Экземпляр Run области текста </param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.RunFormattingValidator.IsUnderline(DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Есть ли выделение подчеркиванием </summary>
+            <param name="runProps"> Экземпляр Run области текста </param>
+            <returns>  </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.RunFormattingValidator.IsHighlighted(DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Есть ли выделение "маркером" </summary>
+            <param name="runProps"> Экземпляр Run области текста </param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.RunFormattingValidator.IsStrikethrough(DocumentFormat.OpenXml.Wordprocessing.RunProperties)">
+            <summary> Есть ли зачеркивание </summary>
+            <param name="runProps"> Экземпляр Run области текста </param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.RunFormattingValidator.IsLatin(System.String)">
+            <summary> Является ли текст латиницей </summary>
+            <param name="text"> Фрагмент текста </param>
+            <returns></returns>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Components.SubChapter">
+            <summary> Класс представляющий подраздел главы </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.SubChapter.Check">
+            <summary> Проверить оформление подраздела </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.SubChapter.CheckHeading">
+            <summary> Проверить оформление названия подраздела </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.SubChapter.FilterParagraphs">
+            <summary> Отфильтровать абзацы текста для проверки </summary>
+            <returns> Отфильтрованная последовательность абзацев </returns>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Components.TableOfContents._headingPattern">
+            <summary> Шаблон названия раздела "Содержание". </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.TableOfContents.CheckHeading">
+            <summary> Проверить оформление абзац названия раздела "Содержание". </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.TableOfContents.CheckContent">
+            <summary> Проверить оформление таблицу раздела "Содержание". </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.Components.TableOfContents.CheckTableOfContents">
+            <summary> Проверка оглавления. </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.FormattingMistakes">
+            <summary> Класс, определяющий коллекцию ошибок форматирования определенного абзаца </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.FormattingMistakes._paragraph">
+            <summary> Абзац текста, проверяемый на ошибки </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingMistakes.Count">
+            <summary> Количество найденных ошибок форматирования абзаца </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingMistakes.Paragraph">
+            <summary> Проверяемый абзац текста </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingMistakes.#ctor(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Создание экземпляра коллекции ошибок конкретного абзаца </summary>
+            <param name="paragraph"> Абзац текста документа </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingMistakes.Add(System.String)">
+            <summary> Добавить ошибку форматирования в список </summary>
+            <param name="mistakeDescription"> Описание ошибки </param>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Typography">
+            <summary> Элементы форматирования документа </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.MarginTop">
+            <summary> Величина верхнего поля (в мм) </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.MarginBottom">
+            <summary> Величина нижнего поля (в мм) </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.MarginLeft">
+            <summary> Величина левого поля (в мм) </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.MarginRight">
+            <summary> Величина правого поля (в мм) </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.FontName">
+            <summary> Название шрифта </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.FontSize">
+            <summary> Размер шрифта </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.FontColor">
+            <summary> Цвет шрифта </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.Bold">
+            <summary> Полужирный </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.Italic">
+            <summary> Курсив </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.Underline">
+            <summary> Подчеркнутый </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.Strike">
+            <summary> Зачеркнутый </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.Highlighted">
+            <summary> Выделение маркером </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.Indentation">
+            <summary> Отступ в начале абзаца</summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.LineSpacing">
+            <summary> Междустрочный интервал </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.Spacing">
+            <summary> Интервалы </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.SpacingBefore">
+            <summary> Интервал "Перед" </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.SpacingAfter">
+            <summary> Интервал "После" </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.Alignment">
+            <summary> Выравнивание текста </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Typography.ParagraphCharsMin">
+            <summary> Минимальное количество символов в абзаце </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.DefaultFormattingParams">
+            <summary> Параметры форматирования по умолчанию </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.DefaultFormattingParams.FontName">
+            <summary> Название шрифта по умолчанию </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.DefaultFormattingParams.FontSize">
+            <summary> Размер шрифта по умолчанию </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.DefaultFormattingParams.FontColor">
+            <summary> Цвет шрифта </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.DefaultFormattingParams.Indentation">
+            <summary> Отступ в начале абзаца </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.DefaultFormattingParams.ParagraphIndentions">
+            <summary> Отступы для абзаца обычного текста. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.DefaultFormattingParams.SpacingBefore">
+            <summary> Интервал 'Перед' </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.DefaultFormattingParams.SpacingAfter">
+            <summary> Интервал 'После' </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.DefaultFormattingParams.LineSpacing">
+            <summary> Междустрочный интервал </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.DefaultFormattingParams.Alignment">
+            <summary> Выравнивание текста </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.DefaultFormattingParams.Initialize(DocumentFormat.OpenXml.Wordprocessing.Style,DocumentFormat.OpenXml.Wordprocessing.DocDefaults,DocumentFormat.OpenXml.Packaging.ThemePart)">
+            <summary> Установить значения параметров форматирования по умолчанию </summary>
+            <param name="normalStyle"> Стиль по умолчанию "Normal" для абзацев </param>
+            <param name="docDefaults"> Параметры форматирования документа по умолчанию  &lt;w:docDefaults&gt; </param>
+            <param name="themePart"> Представляет тему файла theme/theme1.xml </param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.DefaultFormattingParams.SetDefaultFont(DocumentFormat.OpenXml.Wordprocessing.RunPropertiesDefault,DocumentFormat.OpenXml.Wordprocessing.StyleRunProperties,DocumentFormat.OpenXml.Packaging.ThemePart)">
+            <summary> Проверить параметры шрифта по умолчанию </summary>
+            <param name="defaultRunProperties"> Свойства форматирования &lt;w:rPr&gt; элемента &lt;w:docDefaults&gt; </param>
+            <param name="styleRunProperties"> Свойства форматирования &lt;w:rPr&gt; элемента &lt;w:style w:styleId="Normal"&gt; </param>
+            <param name="themePart"> Компонент "Темы" файла theme1.xml </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.DefaultFormattingParams.SetDefaultLineSpacing(DocumentFormat.OpenXml.Wordprocessing.SpacingBetweenLines,DocumentFormat.OpenXml.Wordprocessing.SpacingBetweenLines)">
+            <summary> Задать дефолтный междустрочный интервал </summary>
+            <param name="defaultLineSpacing">Свойство форматирования &lt;w:spacing w:line /&gt; из &lt;w:rPrDefault/&gt; </param>
+            <param name="styleLineSpacing">Свойство форматирования &lt;w:spacing w:line /&gt; из &lt;w:pPr&gt; стиля w:style </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.DefaultFormattingParams.SetDefaultSpacing(DocumentFormat.OpenXml.Wordprocessing.SpacingBetweenLines,DocumentFormat.OpenXml.Wordprocessing.SpacingBetweenLines)">
+            <summary> Задать дефолтные интервалы 'Перед' и 'После' </summary>
+            <param name="defaultSpacing"> Свойство форматирования &lt;w:spacing&gt; из &lt;w:rPrDefault&gt; </param>
+            <param name="normalStyleSpacing"> Свойство форматирования &lt;w:spacing&gt; из &lt;w:pPr&gt; стиля "Normal" </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.DefaultFormattingParams.SetDefaultAlignment(DocumentFormat.OpenXml.Wordprocessing.Justification,DocumentFormat.OpenXml.Wordprocessing.Justification)">
+            <summary> Задать дефолтное выравнивание текста </summary>
+            <param name="defaultJustification"> Свойство форматирования &lt;w:jc&gt; из &lt;w:rPrDefault&gt;&lt; </param>
+            <param name="styleJustification"> Свойство форматирования &lt;w:jc&gt; из &lt;w:pPr&gt; стиля "Normal" </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.DefaultFormattingParams.SetDefaultIndentation(DocumentFormat.OpenXml.Wordprocessing.Indentation,DocumentFormat.OpenXml.Wordprocessing.Indentation)">
+            <summary> Получить значение по умлочанию для отступа в начале абзаца </summary>
+            <param name="defaultIndentation"> Свойство форматирования &lt;w:ind&gt; из &lt;w:rPrDefault&gt;&lt; </param>
+            <param name="normalStyleIndentation"> Свойство форматирования &lt;w:ind&gt; из &lt;w:pPr&gt; стиля "Normal" </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.DefaultFormattingParams.SetDefaultIndentations(DocumentFormat.OpenXml.Wordprocessing.Indentation,DocumentFormat.OpenXml.Wordprocessing.Indentation)">
+            <summary> Получить значение по умлочанию для отступов. </summary>
+            <param name="defaultIndentation"> Свойство форматирования &lt;w:ind&gt; из &lt;w:rPrDefault&gt;&lt; </param>
+            <param name="normalStyleIndentation"> Свойство форматирования &lt;w:ind&gt; из &lt;w:pPr&gt; стиля "Normal" </param>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.Lines">
+            <summary> Типы коротких прямых линий в Word </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Lines.Dash">
+            <summary> Среднее тире </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Lines.LongDash">
+            <summary> Длинное тире </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.Lines.Hyphen">
+            <summary> Дефис </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.FormattingRules">
+            <summary> Правила форматирования Word документа для пояснительных записок курсовых и дипломных работ. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.Dash">
+            <summary> Правильное тире '–', Alt + 0150 </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.CharactersMin">
+            <summary> Минимально допустимое количество символов </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.PagesCountMin">
+            <summary> Минимальное допустимое количество страниц в записке. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.FontSize">
+            <summary> Размер шрифта </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.FontName">
+            <summary> Название шрифта </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.FontColor">
+            <summary> Цвет шрифта </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.Indentation">
+            <summary> Отступ в начале абзаца </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.ParagraphIndention">
+            <summary> Отступы для абзаца обычного текста. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.SpacingBefore">
+            <summary> Интервал 'Перед' </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.SpacingAfter">
+            <summary> Интервал 'После'. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.LineSpacing">
+            <summary> Междустрочный интервал. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.Alignment">
+            <summary> Выравнивание для абзаца обычнного текста. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.FigureCaptionAlignment">
+            <summary> Выравнивание абзаца подписи рисунка. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.PageNumberingAlignment">
+            <summary> Выравнивание абзаца нумерации страниц. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.MarginTop">
+            <summary> Величина верхнего поля. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.MarginBottom">
+            <summary> Величина нижнего поля. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.MarginLeft">
+            <summary> Величина левого поля. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.MarginRight">
+            <summary> Величина правого поля. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.Heading">
+            <summary> Правила форматирования аюзаца названия раздела. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRules.ErrorDescriptions">
+            <summary> Словарь описаний ошибок в оформлении каждого элемента форматирования текста. </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRules.SaveToJson">
+            <summary> Сохраняет настройки форматирования в JSON-строку </summary>
+            <returns>JSON-строка с настройками форматирования</returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRules.LoadFromJson(System.String)">
+            <summary> Загружает настройки форматирования из JSON-строки </summary>
+            <param name="jsonString">JSON-строка с настройками форматирования</param>
+            <returns>true, если загрузка прошла успешно, false - в случае ошибки</returns>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.FormattingRulesDto">
+            <summary> Класс для сериализации/десериализации настроек форматирования в JSON </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.Dash">
+            <summary> Правильное тире '–', Alt + 0150 </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.CharactersMin">
+            <summary> Минимально допустимое количество символов </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.PagesCountMin">
+            <summary> Минимальное допустимое количество страниц в записке. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.FontSize">
+            <summary> Размер шрифта </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.FontName">
+            <summary> Название шрифта </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.FontColor">
+            <summary> Цвет шрифта </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.Indentation">
+            <summary> Отступ в начале абзаца </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.ParagraphIndention">
+            <summary> Отступы для абзаца обычного текста. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.SpacingBefore">
+            <summary> Интервал 'Перед' </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.SpacingAfter">
+            <summary> Интервал 'После'. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.LineSpacing">
+            <summary> Междустрочный интервал. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.Alignment">
+            <summary> Выравнивание для абзаца обычнного текста. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.FigureCaptionAlignment">
+            <summary> Выравнивание абзаца подписи рисунка. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.PageNumberingAlignment">
+            <summary> Выравнивание абзаца нумерации страниц. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.MarginTop">
+            <summary> Величина верхнего поля. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.MarginBottom">
+            <summary> Величина нижнего поля. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.MarginLeft">
+            <summary> Величина левого поля. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.MarginRight">
+            <summary> Величина правого поля. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.FormattingRulesDto.Heading">
+            <summary> Правила форматирования аюзаца названия раздела. </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.HeadingRules">
+            <summary> Правила форматирования названия раздела. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.HeadingRules.Indentation">
+            <summary> Отступы для абазаца названия раздела. </summary>
+        </member>
+        <member name="P:WordDocumentFormattingChecker.HeadingRules.Alignment">
+            <summary> Выравнивание текста. </summary>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.ParagraphIndentions">
+            <summary> Отступы для абазаца обычного текста. </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.ParagraphIndentions.FirstLine">
+            <summary> Отступ первой строки. </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.ParagraphIndentions.Left">
+            <summary> Отступ слева. </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.ParagraphIndentions.Right">
+            <summary> Отступ справа. </summary>
+        </member>
+        <member name="F:WordDocumentFormattingChecker.ParagraphIndentions.Hanging">
+            <summary> Выступ (висячий отступ). </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.ParagraphIndentions.#ctor(System.Nullable{System.Single},System.Nullable{System.Single},System.Nullable{System.Single},System.Nullable{System.Single})">
+            <summary> Создание экземпляра коллекции отступов для обычного текста. </summary>
+            <param name="firstLine"> Отступ первой строки (в см). </param>
+            <param name="left"> Отступ слева (в см). </param>
+            <param name="right"> Отступ справа (в см). </param>
+            <param name="hanging">  Выступ (висячий отступ) (в см). </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.ParagraphIndentions.Equals(System.Object)">
+            <summary> Сравнение двух экземпляров ParagraphIndentions. </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.ParagraphIndentions.op_Equality(WordDocumentFormattingChecker.ParagraphIndentions,WordDocumentFormattingChecker.ParagraphIndentions)">
+            <summary> Проверить объекты отступов на равенство. </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.ParagraphIndentions.GetHashCode">
+            <summary> Переопределение GetHashCode </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.ParagraphIndentions.op_Inequality(WordDocumentFormattingChecker.ParagraphIndentions,WordDocumentFormattingChecker.ParagraphIndentions)">
+            <summary> Проверить объекты отступов на неравенство. </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.ParagraphIndentions.ConvertTo(DocumentFormat.OpenXml.Wordprocessing.Indentation)">
+            <summary> Отобразить объект типа Indentation в экземпляр структуры ParagraphIndention со значениями отступов в сантиметрах. </summary>
+            <param name="indentation"> Экземпляр типа Indentation, представляющий отступы абазаца. </param>
+            <returns> Экземпляр структуры ParagraphIndention. </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.ParagraphIndentions.ConvertTwips(System.String)">
+            <summary> Перевести из Twips (Twentieth of a Point, 1/20 пункта) в сантиметры. </summary>
+            <param name="value"> Значение в виде строки. </param>
+            <returns> Значение в сантиметрах. </returns>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.FormattingRulesExtractor">
+            <summary> Класс для извлечения правил форматирования из документа Word </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.#ctor(DocumentFormat.OpenXml.Packaging.WordprocessingDocument)">
+            <summary> Создает новый экземпляр класса FormattingRulesExtractor </summary>
+            <param name="document"> Документ Word </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.GetDocDefaults">
+            <summary> Получает элемент DocDefaults из стилей документа </summary>
+            <returns> Элемент DocDefaults или null </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.GetStyle(DocumentFormat.OpenXml.Wordprocessing.ParagraphStyleId)">
+            <summary> Получает стиль из style.xml </summary>
+            <param name="styleId"> ID стиля </param>
+            <returns> Найденный стиль или null </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractRules">
+            <summary> Извлекает правила форматирования из Word-документа </summary>
+            <returns> Объект FormattingRulesDto с правилами форматирования в виде json-строки </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.InitializeDefaultRules">
+            <summary> Инициализирует DTO значениями по умолчанию из класса FormattingRules </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.FindParagraphByPattern(System.Collections.Generic.List{DocumentFormat.OpenXml.Wordprocessing.Paragraph},System.String)">
+            <summary> Находит абзац по регулярному выражению </summary>
+            <param name="paragraphs"> Список абзацев </param>
+            <param name="pattern"> Регулярное выражение для поиска </param>
+            <returns> Найденный абзац или null </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractHeadingRules(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Извлекает правила форматирования заголовка </summary>
+            <param name="paragraph"> Абзац заголовка </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractSubheadingRules(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Извлекает правила форматирования подзаголовка </summary>
+            <param name="paragraph"> Абзац подзаголовка </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractMainTextRules(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Извлекает правила форматирования основного текста </summary>
+            <param name="paragraph"> Абзац основного текста </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractFigureCaptionRules(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Извлекает правила форматирования подписи рисунка </summary>
+            <param name="paragraph"> Абзац подписи рисунка </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractListItemRules(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Извлекает правила форматирования элемента списка </summary>
+            <param name="paragraph"> Абзац элемента списка </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractParagraphFormatting(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.Boolean)">
+            <summary> Извлекает общие правила форматирования абзаца </summary>
+            <param name="paragraph"> Абзац </param>
+            <param name="isHeading"> Является ли абзац заголовком </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractRunFormatting(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Извлекает форматирование шрифта из первого элемента Run </summary>
+            <param name="paragraph"> Абзац </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractDefaultRunFormatting">
+            <summary> Извлекает форматирование шрифта по умолчанию из docDefaults </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.GetDefaultFontName">
+            <summary> Получает название шрифта по умолчанию из docDefaults </summary>
+            <returns> Название шрифта по умолчанию </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.GetDefaultFontSize">
+            <summary> Получает размер шрифта по умолчанию из docDefaults </summary>
+            <returns> Размер шрифта по умолчанию </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.GetDefaultFontColor">
+            <summary> Получает цвет шрифта по умолчанию из docDefaults </summary>
+            <returns> Цвет шрифта по умолчанию </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractAlignment(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Извлекает выравнивание из абзаца </summary>
+            <param name="paragraph"> Абзац </param>
+            <returns> Значение выравнивания или null </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.GetDefaultAlignment">
+            <summary> Получает выравнивание по умолчанию из docDefaults </summary>
+            <returns> Значение выравнивания по умолчанию или null </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractLineSpacing(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Извлекает междустрочный интервал из абзаца </summary>
+            <param name="paragraph"> Абзац </param>
+            <returns> Значение междустрочного интервала </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.GetDefaultLineSpacing">
+            <summary> Получает междустрочный интервал по умолчанию из docDefaults </summary>
+            <returns> Междустрочный интервал по умолчанию </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractFirstLineIndent(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Извлекает отступ первой строки из абзаца </summary>
+            <param name="paragraph"> Абзац </param>
+            <returns> Значение отступа первой строки </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.GetDefaultFirstLineIndent">
+            <summary> Получает отступ первой строки по умолчанию из docDefaults </summary>
+            <returns> Отступ первой строки по умолчанию </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractIndentation(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Извлекает отступы абзаца </summary>
+            <param name="paragraph"> Абзац </param>
+            <returns> Объект с отступами абзаца </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.GetDefaultIndentation">
+            <summary> Получает отступы абзаца по умолчанию из docDefaults </summary>
+            <returns> Отступы абзаца по умолчанию </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractSpacing(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Извлекает интервалы до и после абзаца </summary>
+            <param name="paragraph"> Абзац </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.SetDefaultSpacing">
+            <summary> Устанавливает интервалы до и после абзаца из DocDefaults </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.GetDefaultSpacingBefore">
+            <summary> Получает интервал перед абзацем по умолчанию из docDefaults </summary>
+            <returns> Интервал перед абзацем по умолчанию </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.GetDefaultSpacingAfter">
+            <summary> Получает интервал после абзаца по умолчанию из docDefaults </summary>
+            <returns> Интервал после абзаца по умолчанию </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.ExtractMargins">
+            <summary> Извлекает значения полей страницы </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.FormattingRulesExtractor.TwipsToMillimeters(System.Int32)">
+            <summary> Преобразует значение из twips в миллиметры </summary>
+            <param name="twips"> Значение в twips </param>
+            <returns> Значение в миллиметрах </returns>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.MarkupOptimizer">
+            <summary> Оптимизатор разметки документа WordprocessingML </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.MarkupOptimizer.MergeRunsWithSameFormatting(DocumentFormat.OpenXml.Packaging.WordprocessingDocument)">
+            <summary> Слить элементы Run с одинаковым форматированием </summary>
+            <param name="doc"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.MarkupOptimizer.MergeTextElements(DocumentFormat.OpenXml.Wordprocessing.Run,DocumentFormat.OpenXml.Wordprocessing.Run)">
+            <summary> Объединить элементы Text в один </summary>
+            <param name="targetRun"></param>
+            <param name="sourceRun"></param>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.OpenXmlExtensions">
+            <summary>
+            Набор расширяющих методов для работы с элементами OpenXml и их преобразованиями в XElement/XAttribute,
+            а также для сравнения, форматирования и проверки содержимого элементов OpenXml.
+            </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.OpenXmlExtensions.ToXElement(DocumentFormat.OpenXml.OpenXmlElement)">
+            <summary> Маппинг сущности из DocumentFormat.OpenXml в тип из System.Xml.Linq. </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.OpenXmlExtensions.FormattedOuterXml(DocumentFormat.OpenXml.OpenXmlElement)">
+            <summary> Отформатировать строку с переносами и отступами </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.OpenXmlExtensions.FormatXml(System.String)">
+            <summary> Отформатировать строку для вывода в консоль по красоте. </summary>
+            <param name="xmlString"> Строка с XML-разметкой </param>
+            <returns> Отформатированная строка с отступами и табуляцией </returns>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.OpenXmlExtensions.ToXAttribute(DocumentFormat.OpenXml.OpenXmlElement,System.String)">
+            <summary> Получить атрибут элемента по имени в виде типа из System.Xml.Linq. </summary>
+            <param name="element"></param>
+            <param name="attributeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.OpenXmlExtensions.FromXAttribute(System.Xml.Linq.XAttribute)">
+            <summary> Преобразовать атрибут в тип из DocumentFormat.OpenXml </summary>
+            <param name="xAttribute"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.OpenXmlExtensions.AreEqual(DocumentFormat.OpenXml.OpenXmlElement,DocumentFormat.OpenXml.OpenXmlElement)">
+            <summary> Проверить равны ли разметки двух элементов между собой, как строки. </summary>
+            <param name="element1"></param>
+            <param name="element2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.OpenXmlExtensions.AreEqualXElement(DocumentFormat.OpenXml.OpenXmlElement,DocumentFormat.OpenXml.OpenXmlElement)">
+            <summary> Проверить равны ли разметки двух элементов между собой, преобразуя каждый в тип XElement. </summary>
+            <param name="element1"></param>
+            <param name="element2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.OpenXmlExtensions.IsContained(DocumentFormat.OpenXml.OpenXmlElement,DocumentFormat.OpenXml.OpenXmlElement)">
+            <summary> Проверяем, содержится ли элемент elementToCheck внутри parentElement. </summary>
+            <param name="parentElement"></param>
+            <param name="elementToCheck"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.OpenXmlExtensions.GetContained(DocumentFormat.OpenXml.OpenXmlElement,DocumentFormat.OpenXml.OpenXmlElement)">
+            <summary> Получить элемент containedElement содержащийся в parentElement </summary>
+            <param name="parentElement"></param>
+            <param name="containedElement"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.OpenXmlExtensions.IsEmpty(DocumentFormat.OpenXml.OpenXmlElement)">
+            <summary> Содержит ли элемент внутри себя текст (тег &lt;w:t&gt;). </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.OpenXmlExtensions.IsEmpty(System.String)">
+            <summary> Является ли строка пустой или состоящей из пробелов </summary>
+            <param name="text"> Экземпляр строки </param>
+            <returns></returns>
+        </member>
+        <member name="T:WordDocumentFormattingChecker.WordProcessing">
+            <summary> Представляет класс для работы xml-разметкой Word документа </summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.Highlight(DocumentFormat.OpenXml.Wordprocessing.Paragraph,DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues)">
+            <summary> Выделить весь абзац цветом </summary>
+            <param name="paragraph"> Экземпляр абщаца </param>
+            <param name="color"> Цвет выделения </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.Highlight(DocumentFormat.OpenXml.Wordprocessing.Run,DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues)">
+            <summary> Выделить область текста &lt;w:r&gt; с форматированием </summary>
+            <param name="run"></param>
+            <param name="color"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.Highlight(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.Int32,System.Int32,DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues)">
+            <summary> Выделить цветом фрагмент текста в абзаце </summary>
+            <param name="paragraph"> Экземпляр абщаца </param>
+            <param name="startIndex"> Индекс начала фрагмента </param>
+            <param name="endIndex"> Индекс конца фрагмента </param>
+            <param name="color"> Цвет выделения </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.HighlightFirstOccurrence(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.String,DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues)">
+            <summary> Выделить цветом первый найденный фрагмент текста в абзаце </summary>
+            <param name="paragraph"> Экземпляр абщаца </param>
+            <param name="textFragmet"> Фрагмент текста в абщаце </param>
+            <param name="color"> Цвет выделения </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.HighlightAllOccurrences(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.String,DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues)">
+            <summary> Выделить цветом найденные фрагменты текста в абзаце  </summary>
+            <param name="paragraph"> Экземпляр абщаца </param>
+            <param name="textFragmet"> Фрагмент текста в абщаце </param>
+            <param name="color"> Цвет выделения </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.HighlightSegment(DocumentFormat.OpenXml.Wordprocessing.Run,System.Int32,System.Int32,DocumentFormat.OpenXml.Wordprocessing.HighlightColorValues)">
+            <summary> Выделить текст в элементе Run в заданном диапазоне </summary>
+            <param name="run"> Экземпляр элемента Run области форматирования </param>
+            <param name="startInRunIndex"> Начальный индекс </param>
+            <param name="endInRunIndex"> Конечный индекс </param>
+            <param name="color"> Цвет выделения </param>
+            <returns> Количество новосозданных элементов Run после выделения </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.AddComment(System.String)">
+            <summary> Добавить комментарий в начало документа </summary>
+            <param name="commentText"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.AddCommentToSegment(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.Int32,System.Int32,System.String)">
+            <summary> Добавить примечание (комментарий) к фрагменту текста абзаца </summary>
+            <param name="paragraph"> Экземпляр абзаца </param>
+            <param name="startIndex"> Начало фрагмента примечания </param>
+            <param name="endIndex"> Конец фрагмента примечания </param>
+            <param name="commentText"> Описание примечания (комментария) </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.AddCommentToParagraph(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.String,System.Boolean,System.Boolean)">
+            <summary> Добавить примечание (комментарий) к абзацу </summary>
+            <param name="paragraph"> Экземпляр абзаца </param>
+            <param name="commentText"> Описание примечания (комментария) </param>
+            <param name="selection"> Выделять ли текст абзаца </param>
+            <param name="onePerLine"> Каждое примечание с новой строки </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.AddCommentWithoutSelection(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.String,System.Boolean)">
+            <summary>  Добавить примечание (комментарий) к абзацу без выделения </summary>
+            <param name="paragraph"> Экземпляр абзаца </param>
+            <param name="commentText"> Описание комментария </param>
+            <param name="onePerLine"> Каждый комментарий с новой строки </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.AddCommentWithSelection(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.String,System.Boolean)">
+            <summary> Добавить примечание (комментарий) ко всему абзацу с выделением </summary>
+            <param name="paragraph"> Экземпляр абзаца </param>
+            <param name="commentText"> Описание примечания (комментария) </param>
+            <param name="onePerLine"> Каждое примечание с новой строки </param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.AddCommentToRun(DocumentFormat.OpenXml.Wordprocessing.Run,System.String)">
+            <summary> Добавить комментарий к области текста Run </summary>
+            <param name="run"></param>
+            <param name="commentText"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.CreateComment(System.String,System.Boolean)">
+            <summary> Создать примечание (комментарий) в разделе комметариев comments.xml </summary>
+            <param name="commentText"> Текст примечания/ий </param>
+            <param name="onePerLine"> Каждое примечание с новой строки </param>
+            <returns> Id созданного примечания </returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.RemoveAllComments">
+            <summary> Удаление всех примечаний (если имеются)</summary>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.FindRunByIndices(DocumentFormat.OpenXml.Wordprocessing.Paragraph,System.Int32,System.Int32)">
+            <summary> Найти область текста (Run) по индексам фрагмента </summary>
+            <param name="paragraph"></param>
+            <param name="startIndex"></param>
+            <param name="endIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.MergeSameSequentialRuns(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Объединить одинаковые области w:r, идущие последовательно, в одну </summary>
+            <param name="paragraph"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.RemoveProofingErrors(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Удалить все элементы &lt;w:proofErr&gt; в рамках абзаца</summary>
+            <param name="paragraph"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.CleanParagraph(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Очистка параграфа от лишней информации </summary>
+            <param name="paragraph"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.GetNextCommentId">
+            <summary> Получить Id примечания </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.RemoveEastAsiaAttribute(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Удалить атрибут w:eastAsia из шрифтов абзаца, если есть </summary>
+            <param name="paragraph"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.RemoveEmptyRuns(DocumentFormat.OpenXml.Wordprocessing.Paragraph)">
+            <summary> Удалить пустые области Run </summary>
+            <param name="paragraph"></param>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.GetStyle(DocumentFormat.OpenXml.Wordprocessing.ParagraphStyleId)">
+            <summary> Получить стиль из style.xml </summary>
+            <param name="styleId"> ID стиля </param>
+            <returns></returns>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.GetStyle(System.String)">
+            <summary> Получить стиль из style.xml по его имени </summary>
+            <param name="styleName"> Имя стиля </param>
+            <returns></returns>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="M:WordDocumentFormattingChecker.WordProcessing.GetMargins(System.Double@,System.Double@,System.Double@,System.Double@)">
+            <summary> Получить значения полей страницы </summary>
+            <param name="marginTop"> Вехнее поле </param>
+            <param name="marginBottom"> Нижнее поле </param>
+            <param name="marginLeft"> Левое поле </param>
+            <param name="marginRight"> Правое поле </param>
+        </member>
+    </members>
+</doc>

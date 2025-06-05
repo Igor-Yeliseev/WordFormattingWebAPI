@@ -1,0 +1,128 @@
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.csproj.AssemblyReference.cache
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.AssemblyInfoInputs.cache
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.AssemblyInfo.cs
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.csproj.CoreCompileInputs.cache
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\appsettings.Development.json
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\appsettings.json
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.staticwebassets.endpoints.json
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.exe
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.deps.json
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.runtimeconfig.json
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.dll
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.pdb
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\DocumentFormat.OpenXml.dll
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\DocumentFormat.OpenXml.Framework.dll
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\Microsoft.OpenApi.dll
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\System.IO.Packaging.dll
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\WordDocumentFormattingChecker.dll
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\WordDocumentFormattingChecker.pdb
+D:\.NET Projects\DocumentFormattingWebAPI\bin\Debug\net7.0\WordDocumentFormattingChecker.xml
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\scopedcss\bundle\WordFormattingWebAPI.styles.css
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\staticwebassets.build.json
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\staticwebassets.development.json
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\staticwebassets.build.endpoints.json
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.WordFormattingWebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.WordFormattingWebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.build.WordFormattingWebAPI.props
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.WordFormattingWebAPI.props
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.WordFormattingWebAPI.props
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\staticwebassets.pack.json
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\staticwebassets.upToDateCheck.txt
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\WordForm.33B56E56.Up2Date
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.dll
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\refint\WordFormattingWebAPI.dll
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.pdb
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.genruntimeconfig.cache
+D:\.NET Projects\DocumentFormattingWebAPI\obj\Debug\net7.0\ref\WordFormattingWebAPI.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\appsettings.Development.json
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\appsettings.json
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.staticwebassets.endpoints.json
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.exe
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.deps.json
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.runtimeconfig.json
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.pdb
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\DocumentFormat.OpenXml.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\DocumentFormat.OpenXml.Framework.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\Microsoft.OpenApi.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\System.IO.Packaging.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordDocumentFormattingChecker.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordDocumentFormattingChecker.pdb
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordDocumentFormattingChecker.xml
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.csproj.AssemblyReference.cache
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.AssemblyInfoInputs.cache
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.AssemblyInfo.cs
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.csproj.CoreCompileInputs.cache
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\scopedcss\bundle\WordFormattingWebAPI.styles.css
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets.build.json
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets.development.json
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets.build.endpoints.json
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.WordFormattingWebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.WordFormattingWebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.build.WordFormattingWebAPI.props
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.WordFormattingWebAPI.props
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.WordFormattingWebAPI.props
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets.pack.json
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets.upToDateCheck.txt
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordForm.33B56E56.Up2Date
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\refint\WordFormattingWebAPI.dll
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.pdb
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.genruntimeconfig.cache
+D:\.NET Projects\Word Formatting Projects\WordFormattingWebAPI\obj\Debug\net7.0\ref\WordFormattingWebAPI.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\appsettings.Development.json
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\appsettings.json
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.staticwebassets.endpoints.json
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.exe
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.deps.json
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.runtimeconfig.json
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordFormattingWebAPI.pdb
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\DocumentFormat.OpenXml.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\DocumentFormat.OpenXml.Framework.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\Microsoft.OpenApi.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\Newtonsoft.Json.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\System.IO.Packaging.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordDocumentFormattingChecker.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordDocumentFormattingChecker.pdb
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\WordDocumentFormattingChecker.xml
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.csproj.AssemblyReference.cache
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.AssemblyInfoInputs.cache
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.AssemblyInfo.cs
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.csproj.CoreCompileInputs.cache
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\scopedcss\bundle\WordFormattingWebAPI.styles.css
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets.build.json
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets.development.json
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets.build.endpoints.json
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.WordFormattingWebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.WordFormattingWebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.build.WordFormattingWebAPI.props
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.WordFormattingWebAPI.props
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.WordFormattingWebAPI.props
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets.pack.json
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\staticwebassets.upToDateCheck.txt
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordForm.33B56E56.Up2Date
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\refint\WordFormattingWebAPI.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.pdb
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\WordFormattingWebAPI.genruntimeconfig.cache
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\obj\Debug\net7.0\ref\WordFormattingWebAPI.dll
+D:\.NET-Projects\Word-Formatting-Projects\WordFormattingWebAPI\bin\Debug\net7.0\resources\formatting-rules.json

@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "kWVatqZ7bcTUhDZHhfqiVsKM1kpwmLzoxUe4BAclSe0=",
+  "Source": "WordFormattingWebAPI",
+  "BasePath": "_content/WordFormattingWebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
