@@ -31,8 +31,8 @@ namespace DocumentFormattingWebAPI.Controllers
 
                     // Асинхронная проверка
                     memoryStream.Position = 0;
-                    // await CheckDocFormatting(memoryStream); // Позже раскомментировать
-                    await Task.Delay(2300);
+                    await CheckDocFormatting(memoryStream);
+                    // await Task.Delay(2300);
 
                     // Подготовка имени файла с датой и временем
                     var extension = Path.GetExtension(file.FileName);
